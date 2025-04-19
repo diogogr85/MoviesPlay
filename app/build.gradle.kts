@@ -25,12 +25,14 @@ android {
         debug {
             isMinifyEnabled = false
             isShrinkResources = false
-            buildConfigField("String", "BASE_API_URL", "\"url.com\"")
+            buildConfigField("String", "BASE_API_URL", "\"https://api.themoviedb.org/3/\"")
+            buildConfigField("String","TMDB_API_KEY", "\"${System.getenv("TMDB_API_KEY")}\"")
         }
         release {
             isMinifyEnabled = true
             isShrinkResources = true
-            buildConfigField("String", "BASE_API_URL", "\"url.com\"")
+            buildConfigField("String", "BASE_API_URL", "\"https://api.themoviedb.org/3/\"")
+            buildConfigField("String","TMDB_API_KEY", "\"${System.getenv("TMDB_API_KEY")}\"")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
