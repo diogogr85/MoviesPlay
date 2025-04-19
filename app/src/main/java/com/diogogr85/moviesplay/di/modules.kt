@@ -8,6 +8,8 @@ import com.diogogr85.moviesplay.data.network.provideLoggingInterceptor
 import com.diogogr85.moviesplay.data.network.provideOkHttpClient
 import com.diogogr85.moviesplay.domain.presentation.movies.MoviesViewModel
 import com.diogogr85.moviesplay.domain.repository.MoviesRepository
+import com.diogogr85.moviesplay.domain.usecase.movies.MoviesUseCase
+import com.diogogr85.moviesplay.domain.usecase.movies.MoviesUseCaseImpl
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import org.koin.androidx.viewmodel.dsl.viewModel
@@ -29,6 +31,10 @@ val apiServiceModules = module {
 
 val repositoryModules = module {
     factory<MoviesRepository> { MoviesRepositoryImpl(get()) }
+}
+
+val useCaseModules = module {
+    factory<MoviesUseCase> { MoviesUseCaseImpl(get()) }
 }
 
 val viewModelModules = module {

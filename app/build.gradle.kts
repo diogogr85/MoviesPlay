@@ -26,12 +26,14 @@ android {
             isMinifyEnabled = false
             isShrinkResources = false
             buildConfigField("String", "BASE_API_URL", "\"https://api.themoviedb.org/3/\"")
+            buildConfigField("String", "BASE_IMAGE_URL", "\"https://image.tmdb.org/t/p/w342\"")
             buildConfigField("String","TMDB_API_KEY", "\"${System.getenv("TMDB_API_KEY")}\"")
         }
         release {
             isMinifyEnabled = true
             isShrinkResources = true
             buildConfigField("String", "BASE_API_URL", "\"https://api.themoviedb.org/3/\"")
+            buildConfigField("String", "BASE_IMAGE_URL", "\"https://image.tmdb.org/t/p/w342\"")
             buildConfigField("String","TMDB_API_KEY", "\"${System.getenv("TMDB_API_KEY")}\"")
             proguardFiles(
                 getDefaultProguardFile("proguard-android-optimize.txt"),
@@ -54,7 +56,6 @@ android {
 }
 
 dependencies {
-
     implementation(libs.androidx.core.ktx)
     implementation(libs.androidx.lifecycle.runtime.ktx)
     implementation(libs.androidx.activity.compose)
@@ -63,28 +64,31 @@ dependencies {
     implementation(libs.androidx.ui.graphics)
     implementation(libs.androidx.ui.tooling.preview)
     implementation(libs.androidx.material3)
-    testImplementation(libs.junit)
-    androidTestImplementation(libs.androidx.junit)
-    androidTestImplementation(libs.androidx.espresso.core)
-    androidTestImplementation(platform(libs.androidx.compose.bom))
-    androidTestImplementation(libs.androidx.ui.test.junit4)
-    debugImplementation(libs.androidx.ui.tooling)
-    debugImplementation(libs.androidx.ui.test.manifest)
-
+    implementation(libs.androidx.runtime.livedata)
     implementation(libs.kotlinx.coroutines.android)
-
     implementation(libs.koin.android)
+    implementation(libs.koin.androidx.compose)
     implementation(libs.gson)
     implementation(libs.retrofit)
     implementation(libs.converter.gson)
     implementation(libs.okhttp)
     implementation(libs.okhttp.logging.interceptor)
-    implementation(libs.picasso)
+    implementation(libs.coil.compose)
+    implementation(libs.coil.network.okhttp)
+    implementation(libs.androidx.navigation.compose)
+    testImplementation(libs.junit)
+    testImplementation(libs.mockk)
+    testImplementation(libs.mockwebserver)
+    androidTestImplementation(libs.androidx.junit)
+    androidTestImplementation(libs.androidx.espresso.core)
+    androidTestImplementation(platform(libs.androidx.compose.bom))
+    androidTestImplementation(libs.androidx.ui.test.junit4)
+    androidTestImplementation(libs.mockk.android)
+    debugImplementation(libs.androidx.ui.tooling)
+    debugImplementation(libs.androidx.ui.test.manifest)
+
 //    implementation(libs.androidx.room.runtime)
 //    implementation(libs.androidx.room.ktx)
 //    ksp(libs.androidx.room.compiler)
 
-    testImplementation(libs.mockk)
-    testImplementation(libs.mockwebserver)
-    androidTestImplementation(libs.mockk.android)
 }
