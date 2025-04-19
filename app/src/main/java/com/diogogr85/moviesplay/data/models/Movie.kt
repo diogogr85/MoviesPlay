@@ -1,11 +1,13 @@
 package com.diogogr85.moviesplay.data.models
 
+import com.google.gson.annotations.SerializedName
+
 data class Movie(
-    val id: String,
-    val title: String,
-    val description: String,
-    val posterPath: String,
-    val backdropPath: String,
-    val voteAverage: Double,
-    val releaseDate: String
-    )
+    @SerializedName("id") val id: Int,
+    @SerializedName("title") val title: String,
+    @SerializedName("original_title") val originalTitle: String,
+    @SerializedName("overview") val description: String,
+    @SerializedName("poster_path") val posterPath: String,
+    @SerializedName("vote_average") val voteAverage: Double,
+    @SerializedName("release_date") val releaseDate: String
+)
