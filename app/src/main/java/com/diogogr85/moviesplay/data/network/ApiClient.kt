@@ -15,6 +15,7 @@ fun provideLoggingInterceptor(): HttpLoggingInterceptor {
 fun provideAuthInterceptor(): Interceptor {
     val authInterceptor = Interceptor { chain ->
         val request = chain.request().newBuilder()
+            .addHeader("accept", "application/json")
             .addHeader("Authorization", "Bearer ${BuildConfig.TMDB_API_KEY}")
             .build()
         chain.proceed(request)

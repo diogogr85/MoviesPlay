@@ -1,4 +1,4 @@
-package com.diogogr85.moviesplay.data.models
+package com.diogogr85.moviesplay.domain.entity
 
 import com.google.gson.annotations.SerializedName
 
