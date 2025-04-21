@@ -6,4 +6,7 @@ import retrofit2.http.GET
 interface MoviesService {
     @GET("movie/popular?language=pt-BR&page=1")
     suspend fun getPopularMovies(): MoviesApiResult
+
+    @GET("movie/upcoming?language=pt-BR&page=1")
+    suspend fun getUpcomingMovies(): MoviesApiResult
 }

@@ -13,16 +13,15 @@ import com.diogogr85.moviesplay.domain.entity.NavItem
 @Composable
 fun NavigationView(navController: NavHostController, innerPadding: PaddingValues) {
     NavHost(navController = navController, startDestination = "popular", Modifier.padding(innerPadding)) {
-        composable(NavItem.Popular.route) {
+        composable(route = NavItem.Popular.route) {
             PopularScreen(savedStateHandle = navController.currentBackStackEntry?.savedStateHandle) { route ->
                 navController.navigate(route)
             }
         }
         composable(route = NavItem.Upcoming.route) {
-//            val exchangeSelected = navController.previousBackStackEntry?.savedStateHandle?.get<Exchange>(NavItem.ExchangesDetails.param)
-//            ExchangeDetailsScreen(exchangeSelected) {
-//                navController.navigateUp()
-//            }
+            UpcomingScreen(savedStateHandle = navController.currentBackStackEntry?.savedStateHandle) { route ->
+                navController.navigate(route)
+            }
         }
     }
 }

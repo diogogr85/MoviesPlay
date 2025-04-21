@@ -44,6 +44,7 @@ fun BottomNavigationBar(navController: NavController) {
                     it.hasRoute(item.route::class.toString(), null)
                 } == true,
                 onClick = {
+                    selectedNavigationIndex.intValue = index
                     navController.navigate(item.route) {
                         // Pop up to the start destination of the graph to
                         // avoid building up a large stack of destinations

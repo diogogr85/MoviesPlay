@@ -6,4 +6,6 @@ import kotlinx.coroutines.flow.Flow
 
 class MoviesUseCaseImpl(private val moviesRepository: MoviesRepository): MoviesUseCase {
     override fun getPopularMovies(): Flow<List<Movie>> = moviesRepository.getPopularMovies()
+
+    override fun getUpcomingMovies(): Flow<List<Movie>> = moviesRepository.getUpcomingMovies()
 }

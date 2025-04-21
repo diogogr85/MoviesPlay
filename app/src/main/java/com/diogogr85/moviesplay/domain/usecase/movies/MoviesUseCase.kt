@@ -5,4 +5,5 @@ import kotlinx.coroutines.flow.Flow
 
 interface MoviesUseCase {
     fun getPopularMovies(): Flow<List<Movie>>
+    fun getUpcomingMovies(): Flow<List<Movie>>
 }
