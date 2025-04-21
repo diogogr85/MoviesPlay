@@ -1,4 +1,7 @@
 <resources>
     <string name="app_name">MoviesPlay</string>
     <string name="top_app_bar_popular">Filmes Populares</string>
+    <string name="top_app_bar_upcoming">Próximos lançamentos</string>
+    <string name="release_date">Data de lançamento: %1$s"></string>
+
 </resources>

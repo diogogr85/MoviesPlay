@@ -12,4 +12,11 @@ class MoviesRepositoryImpl(private val moviesService: MoviesService): MoviesRepo
 
         emit(moviesList)
     }
+
+    override fun getUpcomingMovies(): Flow<List<Movie>> = flow {
+        val result = moviesService.getUpcomingMovies()
+        val moviesList = result.results
+
+        emit(moviesList)
+    }
 }

@@ -19,8 +19,12 @@ class MoviesViewModel(private val moviesUseCase: MoviesUseCase): ViewModel() {
     private var _popularMoviesListData = MutableLiveData<List<Movie>>()
     val popularMoviesListData: LiveData<List<Movie>> = _popularMoviesListData
 
+    private var _upcomingMoviesListData = MutableLiveData<List<Movie>>()
+    val upcomingMoviesListData: LiveData<List<Movie>> = _upcomingMoviesListData
+
     init {
         loadPopularMovies()
+        loadUpcomingMovies()
     }
 
     private fun loadPopularMovies() {
@@ -31,13 +35,33 @@ class MoviesViewModel(private val moviesUseCase: MoviesUseCase): ViewModel() {
                     .flowOn(Dispatchers.IO)
                     .single()
 
-                _moviesListState.value =
-                    if (moviesList.isNotEmpty()) {
-                        _popularMoviesListData.value = moviesList
-                        MoviesState.Success(moviesList)
-                    } else {
-                        MoviesState.Error("No movies found")
-                    }
+                if (moviesList.isNotEmpty()) {
+                    _popularMoviesListData.value = moviesList
+                    MoviesState.Success(moviesList)
+                } else {
+                    _moviesListState.value = MoviesState.Error("No movies found")
+                }
+            } catch (e: Exception) {
+                _moviesListState.value = MoviesState.Error(e.message.toString())
+            }
+
+        }
+    }
+
+    private fun loadUpcomingMovies() {
+        viewModelScope.launch {
+            try {
+                val moviesList = moviesUseCase
+                    .getUpcomingMovies()
+                    .flowOn(Dispatchers.IO)
+                    .single()
+
+                if (moviesList.isNotEmpty()) {
+                    _upcomingMoviesListData.value = moviesList
+                    MoviesState.Success(moviesList)
+                } else {
+                    _moviesListState.value = MoviesState.Error("No movies found")
+                }
             } catch (e: Exception) {
                 _moviesListState.value = MoviesState.Error(e.message.toString())
             }
