@@ -1,5 +1,6 @@
 package com.diogogr85.moviesplay
 
+import com.diogogr85.moviesplay.data.local.entity.MovieEntityDB
 import com.diogogr85.moviesplay.data.models.MoviesApiResult
 import com.diogogr85.moviesplay.domain.entity.Movie
 
@@ -32,4 +33,3 @@ val moviesApiResult = MoviesApiResult(
     TOTAL_PAGE_DEFAULT,
     TOTAL_RESULTS_DEFAULT
 )
-

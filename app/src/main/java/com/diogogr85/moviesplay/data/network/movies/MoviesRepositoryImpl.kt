@@ -1,5 +1,7 @@
 package com.diogogr85.moviesplay.data.network.movies
 
+import com.diogogr85.moviesplay.data.helper.TimeHelper
+import com.diogogr85.moviesplay.data.local.MoviePLayPrefs
 import com.diogogr85.moviesplay.data.local.dao.MoviesDao
 import com.diogogr85.moviesplay.data.local.entity.MovieType
 import com.diogogr85.moviesplay.data.local.entity.MovieType.POPULAR
@@ -18,16 +20,28 @@ import kotlinx.coroutines.flow.flow
 
 class MoviesRepositoryImpl(
     private val moviesService: MoviesService,
-    private val moviesDao: MoviesDao
+    private val moviesDao: MoviesDao,
+    private val prefs: MoviePLayPrefs,
+    private val timeHelper: TimeHelper = TimeHelper()
 ): MoviesRepository {
     override fun getPopularMovies(pagination: Int): Flow<List<Movie>> = flow {
-        val moviesList = tryMoviesFromDatabase(pagination, POPULAR)
+        val moviesList = if(isDbExpired()) {
+            moviesDao.deleteByType(POPULAR.name)
+            getMoviesFromApi(pagination, POPULAR)
+        } else {
+            tryMoviesFromDatabase(pagination, POPULAR)
+        }
 
         emit(moviesList)
     }
 
     override fun getUpcomingMovies(pagination: Int): Flow<List<Movie>> = flow {
-        val moviesList = tryMoviesFromDatabase(pagination, UPCOMING)
+        val moviesList = if(isDbExpired()) {
+            moviesDao.deleteByType(UPCOMING.name)
+            getMoviesFromApi(pagination, UPCOMING)
+        } else {
+            tryMoviesFromDatabase(pagination, UPCOMING)
+        }
 
         emit(moviesList)
     }
@@ -57,7 +71,14 @@ class MoviesRepositoryImpl(
             }
         }
         val movieList = result.results
+        prefs.dbTimestamp = timeHelper.getCurrentTimestamp()
 
         return movieList
+    }
+
+    private fun isDbExpired() = (timeHelper.getCurrentTimestamp() - prefs.dbTimestamp) > DB_EXPIRATION_TIME
+
+    private companion object {
+        const val DB_EXPIRATION_TIME = 30000L
     }
 }
