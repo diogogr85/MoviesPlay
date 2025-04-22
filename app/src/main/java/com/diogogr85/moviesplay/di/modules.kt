@@ -1,5 +1,8 @@
 package com.diogogr85.moviesplay.di
 
+import android.app.Application
+import android.content.Context
+import com.diogogr85.moviesplay.data.local.MoviePLayPrefs
 import com.diogogr85.moviesplay.data.local.MoviePlayDatabase
 import com.diogogr85.moviesplay.data.local.dao.MoviesDao
 import com.diogogr85.moviesplay.data.local.provideDataBase
@@ -19,9 +22,17 @@ import org.koin.androidx.viewmodel.dsl.viewModel
 import org.koin.dsl.module
 import retrofit2.Retrofit
 
+private const val SHARED_PREFS_FILENAME = "movieplay-sharedpreferences"
+
 val appModules = module {
     single<MoviePlayDatabase> { provideDataBase(get()) }
     single<MoviesDao> { get<MoviePlayDatabase>().moviesDao() }
+    single<MoviePLayPrefs> {
+        MoviePLayPrefs(
+            get<Application>()
+                .getSharedPreferences(SHARED_PREFS_FILENAME, Context.MODE_PRIVATE)
+        )
+    }
 }
 
 val networkModules = module {
@@ -35,7 +46,7 @@ val apiServiceModules = module {
 }
 
 val repositoryModules = module {
-    factory<MoviesRepository> { MoviesRepositoryImpl(get(), get()) }
+    factory<MoviesRepository> { MoviesRepositoryImpl(get(), get(), get()) }
 }
 
 val useCaseModules = module {
