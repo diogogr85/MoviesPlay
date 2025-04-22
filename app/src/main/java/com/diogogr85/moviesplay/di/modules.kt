@@ -1,5 +1,8 @@
 package com.diogogr85.moviesplay.di
 
+import com.diogogr85.moviesplay.data.local.MoviePlayDatabase
+import com.diogogr85.moviesplay.data.local.dao.MoviesDao
+import com.diogogr85.moviesplay.data.local.provideDataBase
 import com.diogogr85.moviesplay.data.network.createService
 import com.diogogr85.moviesplay.data.network.movies.MoviesRepositoryImpl
 import com.diogogr85.moviesplay.data.network.movies.MoviesService
@@ -17,6 +20,8 @@ import org.koin.dsl.module
 import retrofit2.Retrofit
 
 val appModules = module {
+    single<MoviePlayDatabase> { provideDataBase(get()) }
+    single<MoviesDao> { get<MoviePlayDatabase>().moviesDao() }
 }
 
 val networkModules = module {
@@ -30,7 +35,7 @@ val apiServiceModules = module {
 }
 
 val repositoryModules = module {
-    factory<MoviesRepository> { MoviesRepositoryImpl(get()) }
+    factory<MoviesRepository> { MoviesRepositoryImpl(get(), get()) }
 }
 
 val useCaseModules = module {
