@@ -40,6 +40,7 @@ fun UpcomingScreen(
             )
         },
     ) { innerPadding ->
+        LoadingScreen()
         LazyColumn(
             contentPadding = innerPadding
         ) {
@@ -47,5 +48,6 @@ fun UpcomingScreen(
                 MovieCard(movie = movie, true)
             }
         }
+        ErrorScreen()
     }
 }

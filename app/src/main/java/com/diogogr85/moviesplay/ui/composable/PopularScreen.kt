@@ -39,7 +39,6 @@ import org.koin.androidx.compose.koinViewModel
 @Composable
 fun PopularScreen(
     viewModel: MoviesViewModel = koinViewModel(),
-    savedStateHandle: SavedStateHandle? = null,
     navigate: (String) -> Unit
 ) {
     val movies: List<Movie>? by viewModel.popularMoviesListData.observeAsState(emptyList())
@@ -56,11 +55,13 @@ fun PopularScreen(
             )
         },
     ) { innerPadding ->
+        LoadingScreen()
+        ErrorScreen()
         LazyColumn(
             contentPadding = innerPadding
         ) {
             items(movies ?: emptyList()) { movie ->
-                    MovieCard(movie = movie)
+                MovieCard(movie = movie)
             }
         }
     }

@@ -14,7 +14,7 @@ import com.diogogr85.moviesplay.domain.entity.NavItem
 fun NavigationView(navController: NavHostController, innerPadding: PaddingValues) {
     NavHost(navController = navController, startDestination = "popular", Modifier.padding(innerPadding)) {
         composable(route = NavItem.Popular.route) {
-            PopularScreen(savedStateHandle = navController.currentBackStackEntry?.savedStateHandle) { route ->
+            PopularScreen() { route ->
                 navController.navigate(route)
             }
         }

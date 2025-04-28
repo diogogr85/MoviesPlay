@@ -19,25 +19,12 @@ import org.koin.androidx.viewmodel.ext.android.viewModel
 
 class MainActivity : ComponentActivity() {
 
-    private val viewModel: MoviesViewModel by viewModel()
-
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         enableEdgeToEdge()
         setContent {
             MoviesPlayTheme {
-//                Scaffold(modifier = Modifier.fillMaxSize()) { innerPadding ->
-//                    PopularScreen(modifier = Modifier.padding(innerPadding)) {}
-//                }
                 MainScreen()
-            }
-        }
-
-        viewModel.moviesListState.observe(this) { state ->
-            when (state) {
-                is Loading -> {}
-                is Success -> {}
-                is Error -> {}
             }
         }
     }

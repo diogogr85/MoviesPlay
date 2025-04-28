@@ -6,15 +6,14 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.diogogr85.moviesplay.domain.entity.Movie
 import com.diogogr85.moviesplay.domain.usecase.movies.MoviesUseCase
+import com.diogogr85.moviesplay.ui.composable.ScreenErrorManager
+import com.diogogr85.moviesplay.ui.composable.ScreenLoadingManager
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.flow.flowOn
 import kotlinx.coroutines.flow.single
 import kotlinx.coroutines.launch
 
 class MoviesViewModel(private val moviesUseCase: MoviesUseCase): ViewModel() {
-
-    private var _moviesListState = MutableLiveData<MoviesState>(MoviesState.Loading)
-    val moviesListState: LiveData<MoviesState> = _moviesListState
 
     private var _popularMoviesListData = MutableLiveData<List<Movie>>()
     val popularMoviesListData: LiveData<List<Movie>> = _popularMoviesListData
@@ -23,6 +22,12 @@ class MoviesViewModel(private val moviesUseCase: MoviesUseCase): ViewModel() {
     val upcomingMoviesListData: LiveData<List<Movie>> = _upcomingMoviesListData
 
     init {
+        loadAllMovies()
+    }
+
+    fun loadAllMovies() {
+        ScreenLoadingManager.showLoading()
+        ScreenErrorManager.hideErrorScreen()
         loadPopularMovies()
         loadUpcomingMovies()
     }
@@ -35,14 +40,17 @@ class MoviesViewModel(private val moviesUseCase: MoviesUseCase): ViewModel() {
                     .flowOn(Dispatchers.IO)
                     .single()
 
+                ScreenErrorManager.showErrorScreen()
                 if (moviesList.isNotEmpty()) {
                     _popularMoviesListData.value = moviesList
                     MoviesState.Success(moviesList)
                 } else {
-                    _moviesListState.value = MoviesState.Error("No movies found")
+                    ScreenErrorManager.showErrorScreen()
                 }
             } catch (e: Exception) {
-                _moviesListState.value = MoviesState.Error(e.message.toString())
+                ScreenErrorManager.showErrorScreen()
+            } finally {
+                ScreenLoadingManager.hideLoading()
             }
 
         }
@@ -60,10 +68,12 @@ class MoviesViewModel(private val moviesUseCase: MoviesUseCase): ViewModel() {
                     _upcomingMoviesListData.value = moviesList
                     MoviesState.Success(moviesList)
                 } else {
-                    _moviesListState.value = MoviesState.Error("No movies found")
+                    ScreenErrorManager.showErrorScreen()
                 }
             } catch (e: Exception) {
-                _moviesListState.value = MoviesState.Error(e.message.toString())
+                ScreenErrorManager.showErrorScreen()
+            } finally {
+                ScreenLoadingManager.hideLoading()
             }
 
         }
